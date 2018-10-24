@@ -101,7 +101,7 @@ func (e *Exporter) Export(launchDirSrc, launchDirDst string, runImage, origImage
 	return repoImage, nil
 }
 func addRunImageMetadata(runImage v1.Image, metadata *AppImageMetadata) error {
-	runLayerDigest, err := img.TopLayerDigest(runImage)
+	runLayerDiffId, err := img.TopLayerDiffId(runImage)
 	if err != nil {
 		return errors.Wrap(err, "find run image digest")
 	}
@@ -110,7 +110,7 @@ func addRunImageMetadata(runImage v1.Image, metadata *AppImageMetadata) error {
 		return errors.Wrap(err, "find run image digest")
 	}
 	metadata.RunImage = RunImageMetadata{
-		TopLayer: runLayerDigest.String(),
+		TopLayer: runLayerDiffId.String(),
 		SHA:      runImageDigest.String(),
 	}
 	return nil
