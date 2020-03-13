@@ -1,11 +1,13 @@
 package cmd
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"sync"
 
 	"github.com/apex/log"
+	glog "github.com/google/go-containerregistry/pkg/logs"
 	"github.com/heroku/color"
 )
 
@@ -28,6 +30,15 @@ var (
 func SetLogLevel(level string) *ErrorFail {
 	var err error
 	Logger.Level, err = log.ParseLevel(level)
+
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+	fmt.Println(level)
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+	if Logger.Level == log.DebugLevel {
+		glog.Debug.SetOutput(os.Stderr)
+	}
+
 	if err != nil {
 		return FailErrCode(err, CodeInvalidArgs, "parse log level")
 	}
@@ -54,6 +65,10 @@ func (h *handler) HandleLog(entry *log.Entry) error {
 		_, err = h.writer.Write([]byte(appendMissingLineFeed(entry.Message)))
 	}
 	return err
+}
+
+func (h *handler) Writer() io.Writer {
+	return h.writer
 }
 
 func appendMissingLineFeed(msg string) string {
