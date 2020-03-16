@@ -35,9 +35,9 @@ func SetLogLevel(level string) *ErrorFail {
 	fmt.Println(level)
 	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 
-	if Logger.Level == log.DebugLevel {
+	//if Logger.Level == log.DebugLevel {
 		glog.Debug.SetOutput(os.Stderr)
-	}
+	//}
 
 	if err != nil {
 		return FailErrCode(err, CodeInvalidArgs, "parse log level")

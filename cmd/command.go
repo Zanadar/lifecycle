@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"io/ioutil"
-	"log"
+	"fmt"
 	"os"
 )
 
@@ -19,9 +18,11 @@ func Run(c Command, asSubcommand bool) {
 		logLevel     string
 	)
 
-	log.SetOutput(ioutil.Discard)
+	//log.SetOutput(ioutil.Discard)
 	FlagVersion(&printVersion)
 	FlagLogLevel(&logLevel)
+	fmt.Println("-------------------> Log level is: ", logLevel)
+
 	c.Init()
 	if asSubcommand {
 		if err := flagSet.Parse(os.Args[2:]); err != nil {
